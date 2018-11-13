@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head> 
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Note App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+</head>
+<body> 
+    <h1>This is a heading</h1>
+    <input id="search-input" type="text" placeholder="Seach note">
+    <button id="create-note">Create!</button>
+    <select id="sort-by">
+        <option value="byRecency">Sort by recency</option>
+        <option value="byAbc">Show alphabectically</option>
+        <option value="byEdition">Sort by last edition </option>
+    </select>
+    <div id="notes">
+    </div>
+    <script src="uuid4.js"></script>
+    <script src="script-functions.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
