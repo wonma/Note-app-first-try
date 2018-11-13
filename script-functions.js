@@ -7,7 +7,7 @@ const sortBy = document.querySelector('#sort-by')
 
 
 // Get data from local Storage
-const getData = function (notes) {
+const getData = function () {
     const notesFromJSON = localStorage.getItem('notes')
 
     // 조건문 없이 아래와 같이 바로 let에 assign해버리면,
@@ -15,17 +15,25 @@ const getData = function (notes) {
     // 그렇게 되면, none.filter이렇게 되는데 이건 invalid함.
     // 왜냐면 [Array].filter 만 가능하거든. Array가 비어있는건 상관없고! 
 
+    // 내가한것 
+    // if (notesFromJSON !== null) {
+    //     diary = JSON.parse(notesFromJSON)
+    // }
+
+    // 샘이 한 것. return으로 끝을 냄으로서 다른 reusable하게 만들었음
     if (notesFromJSON !== null) {
-        diary = JSON.parse(notesFromJSON)
+        return JSON.parse(notesFromJSON)
+    } else {
+        return []
     }
 }
 
 // Remove a note
-const removeNote = function (id) {
-    const idToRemove = diary.findIndex(function (note) {
+const removeNote = function (id, noteName) {
+    const idToRemove = noteName.findIndex(function (note) {
         return note.id === id
     })
-    diary.splice(idToRemove, 1)
+    noteName.splice(idToRemove, 1)
 }
 
 // Generate DOM notes
@@ -39,9 +47,9 @@ const generateDOMnotes = function (filtered) {
         buttonEl.textContent = 'x'
         todoEl.appendChild(buttonEl)
         buttonEl.addEventListener('click', function () {
-            removeNote(note.id)
+            removeNote(note.id, diary)
             saveData(diary)
-            renderList(diary)
+            renderList(diary, filters)
         })
 
         // Generate title
@@ -64,7 +72,7 @@ const generateDOMnotes = function (filtered) {
 // Event call - take search letters and render
 const inputTakeNRender = function (e) {  
         filterKeyword.searchWord = e.target.value
-        renderList(diary)
+        renderList(diary, filters)
 }
 
 // Save data in local Storage
