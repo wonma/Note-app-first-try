@@ -12,7 +12,7 @@ const getData = function () {
 
     // 조건문 없이 아래와 같이 바로 let에 assign해버리면,
     // null 이라는 값이 diary에 배정되어버림.
-    // 그렇게 되면, none.filter이렇게 되는데 이건 invalid함.
+    // 그렇게 되면, null.filter이렇게 되는데 이건 invalid함.
     // 왜냐면 [Array].filter 만 가능하거든. Array가 비어있는건 상관없고! 
 
     // 내가한것 
@@ -27,6 +27,52 @@ const getData = function () {
         return []
     }
 }
+
+// Sorting notes
+const sorting = function (diaryName, filterKind) {
+    return diaryName.sort(function (a, b) {
+        if (filterKind === 'byRecency') { // timestamp가 큰것이 먼저왔음 좋겠음
+            if (a.createdAt > b.createdAt) {
+                return -1
+            } else if (a.createdAt < b.createdAt) {
+                return 1
+            } else {
+                return 0
+            }
+        } else if (filterKind === 'byEdition') { // timestamp가 큰것이 먼저왔음 좋겠음
+            if (a.updatedAt > b.updatedAt) {
+                return -1
+            } else if (a.updatedAt < b.updatedAt) {
+                return 1
+            } else {
+                return 0
+            }
+        } else if (filterKind === 'byAbc') {
+            if (a.title.toLowerCase() < b.title.toLowerCase()) { // 작은cha가 먼저왔음 좋겠음
+                return -1
+            } else if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                return 0
+            } else {
+                return 0
+            }
+        }
+    })
+}
+
+// Render notes
+// renderList기계에 'filterName' arg 꼭 필요함
+// filters 오브젝트의 searchWord 값을 받아와야하기때문
+const renderList = function (noteName, filters) {
+    noteName = sorting(diary, filters.sortKeyword) // getting sorted array
+
+    const filteredList = noteName.filter(function (note) {
+        return note.title.toLowerCase().includes(filters.searchWord)
+    })
+    notes.innerHTML = ''
+    generateDOMnotes(filteredList)
+}
+
+
 
 // Remove a note
 const removeNote = function (id, noteName) {
@@ -78,4 +124,18 @@ const inputTakeNRender = function (e) {
 // Save data in local Storage
 const saveData = function (dataName) {
     localStorage.setItem('notes', JSON.stringify(dataName))
+}
+
+
+// Generate last edited function (내가한 것)
+//
+// const timeInfo = document.querySelector('#time-info')
+// const generateLastEdited = function (note) {
+//     const lastTimestamp = note.updatedAt
+//     timeInfo.textContent = `Last edited ${moment(lastTimestamp).fromNow()}`
+// }
+
+// 샘이한것
+const generateLastEdited = function (timestamp) {
+    return `Last edited ${moment(timestamp).fromNow()}`
 }
