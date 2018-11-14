@@ -7,7 +7,7 @@ const sortBy = document.querySelector('#sort-by')
 
 
 // Get data from local Storage
-const getData = function () {
+const getData = () => {
     const notesFromJSON = localStorage.getItem('notes')
 
     // 조건문 없이 아래와 같이 바로 let에 assign해버리면,
@@ -21,16 +21,18 @@ const getData = function () {
     // }
 
     // 샘이 한 것. return으로 끝을 냄으로서 다른 reusable하게 만들었음
-    if (notesFromJSON !== null) {
-        return JSON.parse(notesFromJSON)
-    } else {
-        return []
-    }
+    // if (notesFromJSON !== null) {
+    //     return JSON.parse(notesFromJSON)
+    // } else {
+    //     return []
+    // }
+    return notesFromJSON ? JSON.parse(notesFromJSON) : []
 }
 
+
 // Sorting notes
-const sorting = function (diaryName, filterKind) {
-    return diaryName.sort(function (a, b) {
+const sorting = (diaryName, filterKind) => {
+    return diaryName.sort((a, b) => {
         if (filterKind === 'byRecency') { // timestamp가 큰것이 먼저왔음 좋겠음
             if (a.createdAt > b.createdAt) {
                 return -1
@@ -62,12 +64,10 @@ const sorting = function (diaryName, filterKind) {
 // Render notes
 // renderList기계에 'filterName' arg 꼭 필요함
 // filters 오브젝트의 searchWord 값을 받아와야하기때문
-const renderList = function (noteName, filters) {
+const renderList = (noteName, filters) => {
     noteName = sorting(diary, filters.sortKeyword) // getting sorted array
 
-    const filteredList = noteName.filter(function (note) {
-        return note.title.toLowerCase().includes(filters.searchWord)
-    })
+    const filteredList = noteName.filter((note) => note.title.toLowerCase().includes(filters.searchWord))
     notes.innerHTML = ''
     generateDOMnotes(filteredList)
 }
@@ -75,16 +75,14 @@ const renderList = function (noteName, filters) {
 
 
 // Remove a note
-const removeNote = function (id, noteName) {
-    const idToRemove = noteName.findIndex(function (note) {
-        return note.id === id
-    })
+const removeNote = (id, noteName) => {
+    const idToRemove = noteName.findIndex((note) => note.id === id)
     noteName.splice(idToRemove, 1)
 }
 
 // Generate DOM notes
-const generateDOMnotes = function (filtered) {
-    filtered.forEach(function (note) {
+const generateDOMnotes = (filtered) => {
+    filtered.forEach((note) => {
         const todoEl = document.createElement('div')
         const textEl = document.createElement('a')
         const buttonEl = document.createElement('button')
@@ -92,7 +90,7 @@ const generateDOMnotes = function (filtered) {
         // Generate button
         buttonEl.textContent = 'x'
         todoEl.appendChild(buttonEl)
-        buttonEl.addEventListener('click', function () {
+        buttonEl.addEventListener('click', () => {
             removeNote(note.id, diary)
             saveData(diary)
             renderList(diary, filters)
@@ -115,14 +113,10 @@ const generateDOMnotes = function (filtered) {
     })
 }
 
-// Event call - take search letters and render
-const inputTakeNRender = function (e) {  
-        filterKeyword.searchWord = e.target.value
-        renderList(diary, filters)
-}
+
 
 // Save data in local Storage
-const saveData = function (dataName) {
+const saveData = (dataName) => {
     localStorage.setItem('notes', JSON.stringify(dataName))
 }
 
@@ -130,12 +124,10 @@ const saveData = function (dataName) {
 // Generate last edited function (내가한 것)
 //
 // const timeInfo = document.querySelector('#time-info')
-// const generateLastEdited = function (note) {
+// const generateLastEdited = (note) => {
 //     const lastTimestamp = note.updatedAt
 //     timeInfo.textContent = `Last edited ${moment(lastTimestamp).fromNow()}`
 // }
 
 // 샘이한것
-const generateLastEdited = function (timestamp) {
-    return `Last edited ${moment(timestamp).fromNow()}`
-}
+const generateLastEdited = (timestamp) => `Last edited ${moment(timestamp).fromNow()}`

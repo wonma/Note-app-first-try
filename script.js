@@ -8,17 +8,22 @@ const filters = {
 
 renderList(diary, filters)
 
-searchInput.addEventListener('input', inputTakeNRender)
+// Event call - take search letters and render
 
-sortBy.addEventListener('change', function (e) {
+searchInput.addEventListener('input', (e) => {
+    filters.searchWord = e.target.value
+    renderList(diary, filters)
+})
+
+sortBy.addEventListener('change', (e) => {
     filters.sortKeyword = e.target.value
     renderList(diary, filters)
 })
 
-createNote.addEventListener('click', function (e) {
+createNote.addEventListener('click', (e) => {
     const newId = uuidv4()
     const createdTime = moment().valueOf()
-    debugger
+
     diary.push({
         id: newId,
         title: '',
@@ -31,7 +36,7 @@ createNote.addEventListener('click', function (e) {
 
 })
 
-window.addEventListener('storage', function (e) {
+window.addEventListener('storage', (e) => {
     if (e.key === 'notes') {
         diary = JSON.parse(e.newValue)
     }
