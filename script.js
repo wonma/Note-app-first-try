@@ -14,6 +14,7 @@ searchInput.addEventListener('input', (e) => {
     filters.searchWord = e.target.value
     renderList(diary, filters)
 })
+'use strict'
 
 sortBy.addEventListener('change', (e) => {
     filters.sortKeyword = e.target.value

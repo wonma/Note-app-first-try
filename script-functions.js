@@ -1,3 +1,5 @@
+'use strict'
+
 const body = document.getElementsByTagName('body')
 const removeAll = document.querySelector('#remove-all')
 const createNote = document.querySelector('#create-note')
@@ -8,7 +10,7 @@ const sortBy = document.querySelector('#sort-by')
 
 // Get data from local Storage
 const getData = () => {
-    const notesFromJSON = localStorage.getItem('notes')
+    const notesFromJSON = localStorage.getItem('notes') // 뭐든간에 일단 정보를 받아옴.
 
     // 조건문 없이 아래와 같이 바로 let에 assign해버리면,
     // null 이라는 값이 diary에 배정되어버림.
@@ -26,7 +28,11 @@ const getData = () => {
     // } else {
     //     return []
     // }
-    return notesFromJSON ? JSON.parse(notesFromJSON) : []
+    try {  // 아래를 시행하다가 에러가 나면 catch 블록을 대체용으로 실행하고 crash 시키지 않음.
+        return notesFromJSON ? JSON.parse(notesFromJSON) : []
+    } catch(e) {
+        return []
+    }
 }
 
 

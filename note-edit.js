@@ -1,3 +1,5 @@
+'use strict'
+
 const noteID = location.hash.substring(1)
 let diary = getData()   // has the same const name as one in main script file but it's ok
 const inputTitle = document.querySelector('#edit-title')
